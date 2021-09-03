@@ -12,12 +12,9 @@ public class ThreadState {
                 + " Состояние: " + second.getState());
         first.start();
         second.start();
-        while (true) {
-            if (first.getState() == Thread.State.TERMINATED
-                    && second.getState() == Thread.State.TERMINATED) {
-                System.out.println("Работа завершена");
-                break;
-            }
+        while (first.getState() != Thread.State.TERMINATED
+                || second.getState() != Thread.State.TERMINATED) {
+            System.out.println("Работа завершена");
         }
     }
 }
