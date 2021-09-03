@@ -14,7 +14,9 @@ public class ThreadState {
         second.start();
         while (first.getState() != Thread.State.TERMINATED
                 || second.getState() != Thread.State.TERMINATED) {
-            System.out.println("Работа завершена");
+            System.out.println("Первый поток: " + first.getState());
+            System.out.println("Второй поток: " + second.getState());
         }
+        System.out.println("Работа завершена");
     }
 }
