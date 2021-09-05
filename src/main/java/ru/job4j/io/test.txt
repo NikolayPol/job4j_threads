@@ -1,0 +1,6 @@
+http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/maven-v4_0_0.xsd
+Тестовая строка
+Тестовая строка
+Тестовая строка
+Тестовая строка
