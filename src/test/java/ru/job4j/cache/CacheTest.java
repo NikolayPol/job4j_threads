@@ -86,7 +86,7 @@ public class CacheTest {
     }
 
     @Test(expected = OptimisticException.class)
-    public void whenDeleteThenException(){
+    public void whenDeleteThenException() {
         Cache cache = new Cache();
         Base base = new Base(100, 1);
         cache.add(base);
@@ -98,7 +98,7 @@ public class CacheTest {
      * Тестирование сообщения в исключении
      */
     @Test
-    public void whenDeleteThenExceptionMessageTest(){
+    public void whenDeleteThenExceptionMessageTest() {
         thrown.expectMessage("Объекты не совпадают");
         Cache cache = new Cache();
         Base base = new Base(100, 1);
@@ -106,6 +106,4 @@ public class CacheTest {
         base = new Base(100, 2);
         cache.delete(base);
     }
-
-
 }
