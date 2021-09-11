@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * класса AtomicReference и cas(compare-and-swap)-операций.
  * Тестовый класс CASCountTest
  *
- * @version 1.0 08-09-2021
+ * @version 1.1 11-09-2021
  * @author Nikolay Polegaev
  */
 @ThreadSafe
@@ -21,7 +21,6 @@ public class CASCount {
     }
 
     public void increment() {
-        //throw new UnsupportedOperationException("Count is not impl.");
         int currentCount;
         do {
             currentCount = count.get();
@@ -29,7 +28,6 @@ public class CASCount {
     }
 
     public int get() {
-        //throw new UnsupportedOperationException("Count is not impl.");
         return count.get();
     }
 }
