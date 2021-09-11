@@ -3,8 +3,8 @@ package ru.job4j.jcip;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Класс UserStorage реализует блокирующий кеш для модели User.
@@ -15,45 +15,26 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Он указывает на объект монитора, по которому мы будем синхронизироваться.
  * Класс протестирован библиотекой JCIP.
  *
- * @version 1.0 5-09-2021
+ * @version 2.0 11-09-2021
  * @author Niklay Polegaev
  */
 @ThreadSafe
 public class UserStorage {
     @GuardedBy("this")
-    private final ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
-    private final AtomicInteger id = new AtomicInteger();
-
-    public ConcurrentHashMap<Integer, User> getUsers() {
-        return users;
-    }
+    private final HashMap<Integer, User> users = new HashMap<>();
 
     public synchronized boolean add(User user) {
-        boolean res = false;
-        User userReturn = users.put(id.incrementAndGet(), new User(id.get(), user.getAmount()));
-        if (user.equals(userReturn)) {
-            res = true;
-        }
-        return res;
+        return Objects.isNull(users.putIfAbsent(user.getId(),
+                new User(user.getId(), user.getAmount())));
     }
 
     public synchronized boolean update(User user) {
-        boolean res = false;
-        int id = user.getId();
-        User userReturn = users.replace(id, new User(id, user.getAmount()));
-        if (user.equals(userReturn)) {
-            res = true;
-        }
-        return res;
+        return Objects.nonNull(users.replace(user.getId(),
+                new User(user.getId(), user.getAmount())));
     }
 
     public synchronized boolean delete(User user) {
-        boolean res = false;
-        User userReturn = users.remove(user.getId());
-        if (user.equals(userReturn)) {
-            res = true;
-        }
-        return res;
+        return Objects.nonNull(users.remove(user.getId()));
     }
 
     /**
@@ -67,6 +48,12 @@ public class UserStorage {
     public synchronized void transfer(int fromId, int toId, int amount) {
         User userFrom = users.get(fromId);
         User userTo = users.get(toId);
+        if (userFrom == null) {
+            throw new NullPointerException("Objects userFrom are null");
+        }
+        if (userTo == null) {
+            throw new NullPointerException("Objects userTo are null");
+        }
         if (userFrom.getAmount() < amount) {
             //throw new IllegalStateException("Недостаточно средств для выполнения транзакции");
             System.err.println("Недостаточно средств для выполнения транзакции");
@@ -88,17 +75,14 @@ public class UserStorage {
         UserStorage us = new UserStorage();
         //добавляем пользователей
         us.add(new User(1, 1000));
-        us.add(new User(1, 2000));
+        us.add(new User(2, 2000));
         //производит транзакцию с исключением
         us.transfer(2, 1, 2200);
         //производит транзакцию без исключения
         us.transfer(2, 1, 200);
         us.update(new User(2, 5000));
-        System.out.println(us.getUsers());
         //добавление и удаление user
         us.add(new User(3, 6000));
-        System.out.println(us.getUsers());
         us.delete(new User(3, 6000));
-        System.out.println(us.getUsers());
     }
 }
