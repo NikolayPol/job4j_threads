@@ -17,7 +17,6 @@ public class SingleLockList<T> implements Iterable<T> {
     }
 
     public synchronized void add(T value) {
-
         list.add(value);
     }
 

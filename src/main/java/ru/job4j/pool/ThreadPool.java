@@ -14,7 +14,7 @@ import java.util.List;
 public class ThreadPool {
     private int size;
     private final List<Thread> threads = new LinkedList<>();
-    private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>();
+    private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(5);
 
     public ThreadPool() {
         size = Runtime.getRuntime().availableProcessors();
@@ -32,11 +32,11 @@ public class ThreadPool {
         return tasks;
     }
 
-    public void work(Runnable job) {
+    public void work(Runnable job) throws InterruptedException {
         tasks.offer(job);
     }
 
-    public void run() {
+    public void run() throws InterruptedException {
         while (tasks.getQueueSize() != 0) {
             if (tasks.getQueueSize() < size) {
                 size = tasks.getQueueSize();
