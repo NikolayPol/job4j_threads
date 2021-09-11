@@ -13,15 +13,17 @@ import java.util.Queue;
  * Тестовый класс SimpleBlockingQueueTest.
  *
  * @author Nikolay Polegaev
- * @version 1.1 08-09-2021
+ * @version 1.2 11-09-2021
  */
 @ThreadSafe
 
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
+    private final int limit;
 
-    public SimpleBlockingQueue() {
+    public SimpleBlockingQueue(int limit) {
+        this.limit = limit;
     }
 
     public synchronized int getQueueSize() {
@@ -31,20 +33,15 @@ public class SimpleBlockingQueue<T> {
     /**
      * Метод offer() добавляет элементы в очередь в синхронизированном режиме
      */
-    public void offer(T value) {
+    public void offer(T value) throws InterruptedException {
         synchronized (this) {
-            int limit = 5;
             if (queue.size() == limit) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                this.wait();
             }
             queue.offer(value);
-            //System.out.println("offer size " + queue.size());
             this.notify();
         }
+        //System.out.println("offer size " + queue.size());
     }
 
     /**
@@ -53,20 +50,17 @@ public class SimpleBlockingQueue<T> {
      * когда поток переводится в состояние ожидания, то он отпускает объект монитор
      * и другой поток тоже может выполнить этот метод.
      */
-    public T poll() {
+    public T poll() throws InterruptedException {
         synchronized (this) {
             if (queue.isEmpty()) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                this.wait();
             }
             T value = queue.poll();
-            //System.out.println("poll " + queue.size());
             this.notify();
             return value;
         }
-
+        //System.out.println("poll " + queue.size());
     }
+
 }
+
