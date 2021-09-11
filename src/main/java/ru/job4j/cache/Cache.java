@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Тестовый класс CacheTest.
  *
  * @author Nikolay Polegaev
- * @version 1.0 08-09-2021
+ * @version 2.0 11-09-2021
  */
 public class Cache {
     private final Map<Integer, Base> memory = new ConcurrentHashMap<>();
@@ -22,13 +22,7 @@ public class Cache {
      * Для обеспечения потокобезопасности применяются CAS-методы и атомарные операции
      */
     public boolean add(Base model) {
-        Base newModel = null;
-        try {
-            newModel = (Base) model.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return memory.putIfAbsent(model.getId(), newModel) == null;
+        return Objects.isNull(memory.putIfAbsent(model.getId(), model));
     }
 
     /**
@@ -40,29 +34,11 @@ public class Cache {
      * Если версии не равны -  кидать исключение.
      */
     public boolean update(Base model) {
-        Base base = null;
-        if (memory.get(model.getId()).getVersion() != model.getVersion()) {
-            throw new OptimisticException("Модели имеют разные version");
-        }
-        try {
-            base = (Base) model.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        assert base != null;
-        base.setVersion(model.getVersion() + 1);
-        Base stored = memory.replace(model.getId(), base);
-        if (!Objects.equals(stored, model)) {
-            throw new OptimisticException("Update failed");
-        }
-        return true;
+        model.setVersion(model.getVersion() + 1);
+        return Objects.nonNull(memory.computeIfPresent(model.getId(), (key, v) -> model));
     }
 
     public boolean delete(Base model) {
-        Base stored = memory.get(model.getId());
-        if (!stored.equals(model)) {
-            throw new OptimisticException("Объекты не совпадают");
-        }
-        return memory.remove(model.getId(), model);
+        return Objects.nonNull(memory.remove(model.getId(), model));
     }
 }
