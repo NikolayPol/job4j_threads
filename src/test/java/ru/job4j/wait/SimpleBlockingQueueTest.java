@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  * Класс SimpleBlockingQueueTest тестирует класс SimpleBlockingQueue<T>
  * <p>
  * * @author Nikolay Polegaev
- * * @version 2.0 11-09-2021
+ * * @version 2.1 11-09-2021
  */
 public class SimpleBlockingQueueTest {
     @Test
