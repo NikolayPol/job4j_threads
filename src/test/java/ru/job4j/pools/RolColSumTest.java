@@ -22,15 +22,17 @@ public class RolColSumTest {
         int[] actuals = new int[2 * matrix.length];
         int[] expecteds = {6, 12, 15, 15, 24, 18};
         RolColSum.Sums[] res = RolColSum.sum(matrix);
-        for (int i = 0, j = 0; i < res.length; i++, j+=2) {
+        for (int i = 0, j = 0; i < res.length; i++, j += 2) {
             actuals[j] = res[i].getRowSum();
-            actuals[j+1] = res[i].getColSum();
+            actuals[j + 1] = res[i].getColSum();
 
         }
         assertEquals(Arrays.toString(expecteds), Arrays.toString(actuals));
     }
 
-    /**Тестирование асинхронного выполнения*/
+    /**
+     * Тестирование асинхронного выполнения
+     */
     @Test
     public void asyncSumTest() throws InterruptedException {
         RolColSum.Sums sums = new RolColSum.Sums();

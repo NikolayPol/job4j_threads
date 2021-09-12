@@ -50,6 +50,7 @@ public class CacheTest {
         cache.add(base);
         cache.update(base2);
     }
+
     @Test
     public void whenDelete() {
         Cache cache = new Cache();
