@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 /***
  * Класс EmailNotification еализует сервис для рассылки почты.
  *
- * @version 1.0 09-09-2021
+ * @version 1.1 12-09-2021
  * @author Nikolay Polegaev
  */
 public class EmailNotification {
@@ -14,9 +14,6 @@ public class EmailNotification {
             Runtime.getRuntime().availableProcessors());
     private final String subject = "Notification {username} to email {email}";
     private final String body = "Add a new event to {username}";
-
-    public EmailNotification() {
-    }
 
     /**
      * Метод emailTo(User user) через ExecutorService отправлять почту.
