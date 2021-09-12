@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Класс CacheTest тестирует класс Cache.
  *
  * @author Nikolay Polegaev
- * @version 3.0 12-09-2021
+ * @version 3.1 12-09-2021
  */
 public class CacheTest {
     /**
@@ -42,59 +42,19 @@ public class CacheTest {
         assertTrue(cache.update(newBase));
     }
 
+    @Test(expected = OptimisticException.class)
+    public void whenUpdateDifferenceVersion() {
+        Cache cache = new Cache();
+        Base base = new Base(100, 1);
+        Base base2 = new Base(100, 2);
+        cache.add(base);
+        cache.update(base2);
+    }
     @Test
     public void whenDelete() {
         Cache cache = new Cache();
         Base base = new Base(100, 1);
         assertTrue(cache.add(base));
         assertTrue(cache.delete(base));
-        //assertNull(cache.getMemory().get(100));
     }
-//    @Test(expected = OptimisticException.class)
-//    public void whenUpdateDifferenceVersion() {
-//        Cache cache = new Cache();
-//        Base base = new Base(100, 1);
-//        cache.add(base);
-//        base.setVersion(2);
-//        //System.out.println(base.getVersion());
-//        //System.out.println(cache.getMemory().get(100).getVersion());
-
-//        cache.update(base);
-//    }
-//    /**
-//     * Тестирование сообщения в исключении
-//     */
-//    @Test
-//    public void whenUpdateThenExceptionMessageTest() {
-//        thrown.expect(OptimisticException.class);
-//        thrown.expectMessage("Модели имеют разные version");
-//        Cache cache = new Cache();
-//        Base base = new Base(100, 1);
-//        cache.add(base);
-//        base.setVersion(2);
-//        cache.update(base);
-
-//    }
-
-//    @Test(expected = OptimisticException.class)
-//    public void whenDeleteThenException() {
-//        Cache cache = new Cache();
-//        Base base = new Base(100, 1);
-//        cache.add(base);
-//        base = new Base(100, 2);
-//        cache.delete(base);
-//    }
-
-//    /**
-//     * Тестирование сообщения в исключении
-//     */
-//    @Test
-//    public void whenDeleteThenExceptionMessageTest() {
-//        thrown.expectMessage("Объекты не совпадают");
-//        Cache cache = new Cache();
-//        Base base = new Base(100, 1);
-//        cache.add(base);
-//        base = new Base(100, 2);
-//        cache.delete(base);
-//    }
 }
