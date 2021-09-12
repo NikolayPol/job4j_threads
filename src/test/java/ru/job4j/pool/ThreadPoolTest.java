@@ -11,7 +11,7 @@
 // * Класс ThreadPoolTest тестирует класс ThreadPool.
 // *
 // * @author Niokolay Polegaev
-// * @version 1.0 09-09-2021
+// * @version 2.0 12-09-2021
 // */
 //public class ThreadPoolTest {
 //    @Test
