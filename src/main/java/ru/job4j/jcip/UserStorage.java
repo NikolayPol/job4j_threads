@@ -15,8 +15,8 @@ import java.util.Objects;
  * Он указывает на объект монитора, по которому мы будем синхронизироваться.
  * Класс протестирован библиотекой JCIP.
  *
- * @version 2.0 11-09-2021
- * @author Niklay Polegaev
+ * @version 3.0 12-09-2021
+ * @author Nikolay Polegaev
  */
 @ThreadSafe
 public class UserStorage {
@@ -24,13 +24,11 @@ public class UserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
 
     public synchronized boolean add(User user) {
-        return Objects.isNull(users.putIfAbsent(user.getId(),
-                new User(user.getId(), user.getAmount())));
+        return Objects.isNull(users.putIfAbsent(user.getId(), user));
     }
 
     public synchronized boolean update(User user) {
-        return Objects.nonNull(users.replace(user.getId(),
-                new User(user.getId(), user.getAmount())));
+        return Objects.nonNull(users.replace(user.getId(), user));
     }
 
     public synchronized boolean delete(User user) {
@@ -48,15 +46,8 @@ public class UserStorage {
     public synchronized void transfer(int fromId, int toId, int amount) {
         User userFrom = users.get(fromId);
         User userTo = users.get(toId);
-        if (userFrom == null) {
-            throw new NullPointerException("Objects userFrom are null");
-        }
-        if (userTo == null) {
-            throw new NullPointerException("Objects userTo are null");
-        }
-        if (userFrom.getAmount() < amount) {
-            //throw new IllegalStateException("Недостаточно средств для выполнения транзакции");
-            System.err.println("Недостаточно средств для выполнения транзакции");
+        if (userFrom == null || userTo == null || userFrom.getAmount() < amount) {
+            System.err.println("Ошибка выполнения транзакции");
             return;
         }
         userFrom.setAmount(userFrom.getAmount() - amount);
