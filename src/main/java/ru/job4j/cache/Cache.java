@@ -1,5 +1,8 @@
 package ru.job4j.cache;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,14 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * Тестовый класс CacheTest.
  *
  * @author Nikolay Polegaev
- * @version 2.0 11-09-2021
+ * @version 3.0 12-09-2021
  */
+@ThreadSafe
 public class Cache {
     private final Map<Integer, Base> memory = new ConcurrentHashMap<>();
-
-    public Map<Integer, Base> getMemory() {
-        return memory;
-    }
 
     /**
      * Для обеспечения потокобезопасности применяются CAS-методы и атомарные операции
@@ -34,8 +34,14 @@ public class Cache {
      * Если версии не равны -  кидать исключение.
      */
     public boolean update(Base model) {
-        model.setVersion(model.getVersion() + 1);
-        return Objects.nonNull(memory.computeIfPresent(model.getId(), (key, v) -> model));
+        return Objects.nonNull(memory.computeIfPresent(model.getId(), (key, v) -> {
+            Base stored = memory.get(model.getId());
+            if (stored.getVersion() != model.getVersion()) {
+                throw new OptimisticException("Версия обновляемой модели не совпадают");
+            }
+            model.setVersion(model.getVersion() + 1);
+            return model;
+        }));
     }
 
     public boolean delete(Base model) {

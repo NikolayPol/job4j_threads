@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Класс CacheTest тестирует класс Cache.
  *
  * @author Nikolay Polegaev
- * @version 2.0 11-09-2021
+ * @version 3.0 12-09-2021
  */
 public class CacheTest {
     /**
@@ -34,23 +34,22 @@ public class CacheTest {
     }
 
     @Test
-    public void whenAddAndGet() {
-        Cache cache = new Cache();
-        Base base = new Base(100, 1);
-        cache.add(base);
-        assertThat(cache.getMemory().get(100), is(base));
-    }
-
-    @Test
     public void whenUpdate() {
         Cache cache = new Cache();
         Base base = new Base(100, 1);
         cache.add(base);
         Base newBase = new Base(100, 1);
         assertTrue(cache.update(newBase));
-        assertEquals(cache.getMemory().get(100).getVersion(), 2);
     }
 
+    @Test
+    public void whenDelete() {
+        Cache cache = new Cache();
+        Base base = new Base(100, 1);
+        assertTrue(cache.add(base));
+        assertTrue(cache.delete(base));
+        //assertNull(cache.getMemory().get(100));
+    }
 //    @Test(expected = OptimisticException.class)
 //    public void whenUpdateDifferenceVersion() {
 //        Cache cache = new Cache();
@@ -59,12 +58,12 @@ public class CacheTest {
 //        base.setVersion(2);
 //        //System.out.println(base.getVersion());
 //        //System.out.println(cache.getMemory().get(100).getVersion());
+
 //        cache.update(base);
 //    }
-
-    /**
-     * Тестирование сообщения в исключении
-     */
+//    /**
+//     * Тестирование сообщения в исключении
+//     */
 //    @Test
 //    public void whenUpdateThenExceptionMessageTest() {
 //        thrown.expect(OptimisticException.class);
@@ -74,16 +73,8 @@ public class CacheTest {
 //        cache.add(base);
 //        base.setVersion(2);
 //        cache.update(base);
-//    }
 
-    @Test
-    public void whenDelete() {
-        Cache cache = new Cache();
-        Base base = new Base(100, 1);
-        assertTrue(cache.add(base));
-        assertTrue(cache.delete(base));
-        assertNull(cache.getMemory().get(100));
-    }
+//    }
 
 //    @Test(expected = OptimisticException.class)
 //    public void whenDeleteThenException() {
