@@ -3,4 +3,10 @@
 [![codecov](https://codecov.io/gh/NikolayPol/job4j_threads/branch/master/graph/badge.svg?token=ZPHIQURXW6)](https://codecov.io/gh/NikolayPol/job4j_threads)
 
 "Объединение зафиксированных изменений"
+<<<<<<< Updated upstream
 git after stash.
+=======
+
+Git stash
+>>>>>>> Stashed changes
+
