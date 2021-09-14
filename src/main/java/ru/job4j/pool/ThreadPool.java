@@ -18,18 +18,28 @@ public class ThreadPool {
 
     public ThreadPool() throws InterruptedException {
         for (int i = 0; i < size; i++) {
-            threads.add(new Thread(tasks.poll()));
+            threads.add(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        tasks.poll();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }));
         }
+        startPool();
     }
 
     public void work(Runnable job) throws InterruptedException {
         tasks.offer(job);
-        startPool();
     }
 
-    private void startPool() {
-        while (tasks.getQueueSize() != 0) {
-            for (int i = 0; i < size; i++) {
+    private void startPool() throws InterruptedException {
+        while (true) {
+
+            for (int i = 0; i < threads.size(); i++) {
                 Thread thread = threads.get(i);
                 thread.start();
             }
