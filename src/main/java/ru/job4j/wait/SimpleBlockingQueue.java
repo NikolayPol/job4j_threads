@@ -41,7 +41,6 @@ public class SimpleBlockingQueue<T> {
             queue.offer(value);
             this.notify();
         }
-        //System.out.println("offer size " + queue.size());
     }
 
     /**
@@ -59,7 +58,6 @@ public class SimpleBlockingQueue<T> {
             this.notify();
             return value;
         }
-        //System.out.println("poll " + queue.size());
     }
 
 }

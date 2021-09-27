@@ -15,8 +15,8 @@ public class ArraySearchIndex extends RecursiveTask<Integer> {
 
     private final int[] array;
     private final int element;
-    private int start;
-    private int end;
+    private final int start;
+    private final int end;
     private final ForkJoinPool pool = ForkJoinPool.commonPool();
 
     public ArraySearchIndex(int[] array, int element, int start, int end) {

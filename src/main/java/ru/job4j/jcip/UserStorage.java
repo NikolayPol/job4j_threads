@@ -60,19 +60,18 @@ public class UserStorage {
 
     /**
      * Метод для тестирования класса UserStorage.
-     *
+     * -добавляем пользователей;
+     * -производит транзакцию с исключением;
+     * -производит транзакцию без исключения;
+     * -добавление и удаление user;
      */
     public static void main(String[] args) {
         UserStorage us = new UserStorage();
-        //добавляем пользователей
         us.add(new User(1, 1000));
         us.add(new User(2, 2000));
-        //производит транзакцию с исключением
         us.transfer(2, 1, 2200);
-        //производит транзакцию без исключения
         us.transfer(2, 1, 200);
         us.update(new User(2, 5000));
-        //добавление и удаление user
         us.add(new User(3, 6000));
         us.delete(new User(3, 6000));
     }

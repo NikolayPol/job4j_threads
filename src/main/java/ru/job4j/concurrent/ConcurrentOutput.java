@@ -9,9 +9,9 @@ public class ConcurrentOutput {
                 () -> System.out.println(Thread.currentThread().getName()));
         Runnable r = () -> System.out.println(Thread.currentThread().getName());
 
-        another.start(); //2 второй поток
-        second.start(); //3 поток
-        new Thread(r).start(); //4 поток
-        System.out.println(Thread.currentThread().getName()); //1 поток
+        another.start();
+        second.start();
+        new Thread(r).start();
+        System.out.println(Thread.currentThread().getName());
     }
 }

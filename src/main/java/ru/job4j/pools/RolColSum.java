@@ -61,6 +61,8 @@ public class RolColSum {
 
     /**Метод asyncSum() вычисляет сумму строк и стобцов элементов матрицы
      * при асинхронном выполнении.
+     * 1.считаем сумму строк асинхронно.
+     * 2.считаем сумму столбцов асинхронно.
      * Класс CompletableFuture выполняет здачу асинхронно.
      * Метод .runAsync выполняет задачу асинхронно и ничего не возвращает
      * @param matrix - матрица, для которой производится расчет
@@ -73,7 +75,6 @@ public class RolColSum {
         }
 
         CompletableFuture.runAsync(() -> {
-            //считаем сумму строк асинхронно
             for (int row = 0; row < matrix.length; row++) {
                 for (int col = 0; col < matrix[row].length; col++) {
                     sums[row].setRowSum(sums[row].getRowSum() + matrix[row][col]);
@@ -82,7 +83,6 @@ public class RolColSum {
         });
 
         CompletableFuture.runAsync(() -> {
-            //считаем сумму столбцов асинхронно
             for (int i = 0; i < matrix[0].length; i++) {
                 for (int j = 0; j < matrix[i].length; j++) {
                     sums[i].setColSum(sums[i].getColSum() + matrix[j][i]);
@@ -92,17 +92,18 @@ public class RolColSum {
         return sums;
     }
 
-    /**Ручное тестирование класса RolColSum*/
+    /**Ручное тестирование класса RolColSum
+     * 1.вычисление последователно.
+     * 2.вычисление асинхронно.
+     * */
     public static void main(String[] args) throws InterruptedException {
         int[][] matrix = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        //вычисление последователно
         Sums[] res = RolColSum.sum(matrix);
         for (int i = 0; i < res.length; i++) {
             System.out.println("П:Сумма элементов " + i + " строки = " + res[i].getRowSum() + " ");
             System.out.println("П:Сумма элементов " + i + " столбца = " + res[i].getColSum() + " ");
 
         }
-        //вычисление асинхронно
         Sums[] resAsync = RolColSum.asyncSum(matrix);
         Thread.sleep(10);
         for (int i = 0; i < res.length; i++) {
