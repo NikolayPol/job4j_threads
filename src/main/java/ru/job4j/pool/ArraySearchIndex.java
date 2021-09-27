@@ -1,5 +1,6 @@
 package ru.job4j.pool;
 
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 /**
@@ -8,16 +9,21 @@ import java.util.concurrent.RecursiveTask;
  * https://www.youtube.com/watch?v=fGuvosd-L98
  *
  * @author Nikolay Polegaev
- * @version 1.0 10.09.2021
+ * @version 2.0 27.09.2021
  */
 public class ArraySearchIndex extends RecursiveTask<Integer> {
 
     private final int[] array;
     private final int element;
+    private int start;
+    private int end;
+    private final ForkJoinPool pool = ForkJoinPool.commonPool();
 
-    public ArraySearchIndex(int[] array, int element) {
+    public ArraySearchIndex(int[] array, int element, int start, int end) {
         this.array = array;
         this.element = element;
+        this.start = start;
+        this.end = end;
     }
 
     @Override
@@ -29,5 +35,9 @@ public class ArraySearchIndex extends RecursiveTask<Integer> {
             }
         }
         return index;
+    }
+
+    public int execute() {
+        return pool.invoke(new ArraySearchIndex(array, element, start, end));
     }
 }
