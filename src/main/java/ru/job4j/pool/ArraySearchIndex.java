@@ -12,7 +12,6 @@ import java.util.concurrent.RecursiveTask;
  * @version 2.0 27.09.2021
  */
 public class ArraySearchIndex extends RecursiveTask<Integer> {
-
     private final int[] array;
     private final int element;
     private final int start;
