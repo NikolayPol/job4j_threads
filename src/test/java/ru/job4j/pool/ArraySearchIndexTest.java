@@ -33,5 +33,4 @@ public class ArraySearchIndexTest {
         int actual = as.join();
         assertEquals(actual, expected);
     }
-
 }

@@ -17,7 +17,6 @@ public class RolColSum {
         private int rowSum = 0;
         private int colSum = 0;
 
-        /* Getter and Setter */
         public int getRowSum() {
             return rowSum;
         }
@@ -43,14 +42,12 @@ public class RolColSum {
             sums[i] = new RolColSum.Sums();
         }
 
-        //считаем сумму строк
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[row].length; col++) {
                 sums[row].setRowSum(sums[row].getRowSum() + matrix[row][col]);
             }
         }
 
-        //считаем сумму столбцов
         for (int i = 0; i < matrix[0].length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 sums[i].setColSum(sums[i].getColSum() + matrix[j][i]);
