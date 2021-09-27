@@ -7,7 +7,6 @@ import java.util.concurrent.RecursiveTask;
  * Класс реализует параллельный поиск индекса в массиве.
  * См. https://habr.com/en/post/565924/
  * https://www.youtube.com/watch?v=fGuvosd-L98
- *
  * @author Nikolay Polegaev
  * @version 2.0 27.09.2021
  */
