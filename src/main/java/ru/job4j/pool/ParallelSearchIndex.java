@@ -14,6 +14,7 @@ import java.util.concurrent.RecursiveTask;
  * @author Nikolay Polegaev
  * @version 3.0 02.10.2021
  */
+
 public class ParallelSearchIndex<T> extends RecursiveTask<Integer> {
     private static final int THRESHOLD = Runtime.getRuntime().availableProcessors();
     private final T[] array;
