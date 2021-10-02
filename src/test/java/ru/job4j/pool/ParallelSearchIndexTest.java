@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  * Класс ArraySearchIndexTest тестирует класс ArraySearchIndex
  *
  * @author Nikolay Polegaev
- * @version 2.0 27.09.2021
+ * @version 3.0 02.10.2021
  */
 public class ParallelSearchIndexTest {
 
@@ -34,7 +34,6 @@ public class ParallelSearchIndexTest {
         int rsl = ParallelSearchIndex.indexOf(array, el);
         assertThat(rsl, is(4_192));
     }
-
 
     @Test
     public void whenNotFoundIndex() {
